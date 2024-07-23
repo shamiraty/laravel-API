@@ -1,6 +1,6 @@
-**# LARAVEL-API**
+# **LARAVEL-API**
 
-**# LARAVEL API: WEB SERVICES USING RESTFUL [ HTTP REQUEST & JSON RESPONSE ]**
+# **LARAVEL API: WEB SERVICES USING RESTFUL [ HTTP REQUEST & JSON RESPONSE ]**
 ___
 ## Introduction
 This tutorial covers the creation of a RESTful API using Laravel, JavaScript, MySQL, AJAX, HTML, Bootstrap, PHP, and CSS.
