@@ -186,7 +186,6 @@ _Define API routes in routes/api.php:_
 use App\Http\Controllers\UserController;
 Route::apiResource('users', UserController::class);
 ```
-
 ### step 14: Implement Controller Methods
 _Update UserController (app/Http/Controllers/UserController.php):_
 
