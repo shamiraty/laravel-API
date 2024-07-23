@@ -17,3 +17,36 @@ cd /
 ```
 ### Step 4: Create a New Laravel Project
 _In the command prompt, create a new Laravel project by running:_
+```sh
+laravel new my-laravel-api
+```
+
+### Step 5: Then, navigate into your new project directory:
+```sh
+cd my-laravel-api
+```
+### Step 6: run laravel project:
+```sh
+php artisan serve
+```
+_in command prompt copy given IP address and paste on browser _
+
+### step 7: Set up your .env file: Configure your database settings in the .env file.
+_Create the database: Create a MySQL database named laravel_api (or any name you prefer)_
+```sh
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_api
+DB_USERNAME=root
+DB_PASSWORD=
+```
+### step 8: Set Up Laravel Models and Migrations
+```bash
+php artisan make:migration create_users_table --create=users
+```
+
+
+
+
+
