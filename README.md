@@ -46,6 +46,26 @@ DB_PASSWORD=
 php artisan make:migration create_users_table --create=users
 ```
 
+### step 9: Define the schema in the migration file (database/migrations/xxxx_xx_xx_xxxxxx_create_users_table.php):
+
+``` php
+public function up()
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('email')->unique();
+        $table->timestamp('email_verified_at')->nullable();
+        $table->string('password');
+        $table->string('phone_number');
+        $table->string('resident');
+        $table->string('national_id')->unique();
+        $table->rememberToken();
+        $table->timestamps();
+    });
+}
+
+```
 
 
 
@@ -53,44 +73,9 @@ php artisan make:migration create_users_table --create=users
 
 
 
+ 
 
-
-
-For environments that support CSS, you might use something like this:
-
-```html
-<style>
-  pre {
-    background-color: black;
-    color: white;
-  }
-</style>
-
-## Steps to Set Up a Laravel Project
-
-### Step 1: Download Composer
-Download Composer, which allows you to use `php artisan` and other Laravel commands, from [this link](https://getcomposer.org/download/).
-
-### Step 2: Install Laravel Installer
-Open your command prompt and run the following command:
-
-<pre><code class="language-sh">composer global require laravel/installer</code></pre>
-
-### Step 3: Navigate to Your Desired Directory
-Open the command prompt, navigate to any directory (e.g., Desktop), and run:
-
-<pre><code class="language-sh">cd /</code></pre>
-
-### Step 4: Create a New Laravel Project
-In the command prompt, create a new Laravel project by running:
-
-<pre><code class="language-sh">laravel new my-laravel-api</code></pre>
-
-Then, navigate into your new project directory:
-
-<pre><code class="language-sh">cd my-laravel-api</code></pre>
-
-
+ 
 
 
 
