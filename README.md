@@ -33,7 +33,7 @@ _in command prompt copy given IP address and paste on browser _
 
 ### step 7: Set up your .env file: Configure your database settings in the .env file.
 _Create the database: Create a MySQL database named laravel_api (or any name you prefer)_
-```sh
+```php
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -67,9 +67,130 @@ public function up()
 
 ```
 
+### step 10: Run the migration:
+```bash
+php artisan migrate
+```
+### step 10:  Create a User Model and Controller
+_Create a User model:_
+```bash
+php artisan make:model User
+```
 
+### step 11: Create a controller:
+```bash
+php artisan make:controller UserController --resource
+```
 
+### step 12: Define the User model (app/Models/User.php):
+```php
+namespace App\Models;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable;
 
+    protected $fillable = [
+        'name', 'email', 'password', 'phone_number', 'resident', 'national_id',
+    ];
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+}
+```
+
+### step 13: Set Up API Routes
+_Define API routes in routes/api.php:_
+```php
+
+use App\Http\Controllers\UserController;
+Route::apiResource('users', UserController::class);
+```
+
+### step 14: Implement Controller Methods
+_Update UserController (app/Http/Controllers/UserController.php):_
+
+```php
+namespace App\Http\Controllers;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+class UserController extends Controller
+{
+    public function index()
+    {
+        return User::all();
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'phone_number' => 'required|string|max:20',
+            'resident' => 'required|string|max:255',
+            'national_id' => 'required|string|max:255|unique:users',
+        ]);
+
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'phone_number' => $validatedData['phone_number'],
+            'resident' => $validatedData['resident'],
+            'national_id' => $validatedData['national_id'],
+        ]);
+
+        return response()->json($user, 201);
+    }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'sometimes|string|min:8',
+            'phone_number' => 'sometimes|string|max:20',
+            'resident' => 'sometimes|string|max:255',
+            'national_id' => 'sometimes|string|max:255|unique:users,national_id,' . $user->id,
+        ]);
+
+        if (isset($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        $user->update($validatedData);
+
+        return response()->json($user);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(null, 204);
+    }
+}
+```
+
+### Step 15: Testing the API
+_Run the Laravel development server:_
+```bash
+php artisan serve
+```
 
 
 
