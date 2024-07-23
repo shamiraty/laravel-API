@@ -1,6 +1,6 @@
-**# LARAVEL-API
+**# LARAVEL-API**
 
-# LARAVEL API: WEB SERVICES USING RESTFUL [ HTTP REQUEST & JSON RESPONSE ]**
+**# LARAVEL API: WEB SERVICES USING RESTFUL [ HTTP REQUEST & JSON RESPONSE ]**
 ___
 ## Introduction
 This tutorial covers the creation of a RESTful API using Laravel, JavaScript, MySQL, AJAX, HTML, Bootstrap, PHP, and CSS.
@@ -75,9 +75,9 @@ By reviewing these sources, we ensure that our project aligns with industry stan
 ## Future and Conclusion
 Future enhancements could include advanced security measures and scaling. This tutorial provides a solid foundation for integrating multiple web technologies effectively.
 
-## STEPS TO SET UP A LARAVEL PROJECT**
+**## STEPS TO SET UP A LARAVEL PROJECT**
 
-## PART A: LARAVEL API DEVELOPMENT**
+**## PART A: LARAVEL API DEVELOPMENT**
 
 ### Step 1: Download Composer
 _Download Composer, which allows you to use `php artisan` and other Laravel commands, from [this link](https://getcomposer.org/download/)._
