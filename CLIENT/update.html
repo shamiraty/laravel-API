@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min5.css">
+
+    <!-- SweetAlert CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .card {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .form-control {
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+
+        .dark-mode .btn-primary {
+            background-color: #1e88e5;
+            border-color: #1e88e5;
+        }
+
+        #loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #loading .spinner-border {
+            width: 5rem;
+            height: 5rem;
+            border-width: 0.5em;
+            border-color: rgba(0, 0, 0, 0.2);
+            border-right-color: #007bff;
+        }
+
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-switcher" id="theme-switcher">
+        <i class="material-icons">dark_mode</i>
+    </div>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">Update User</h2>
+            </div>
+            <div class="card-body">
+                <form id="update-form">
+                    <div class="form-group">
+                        <label for="user-id">User ID:</label>
+                        <input type="text" id="user-id" name="user-id" class="form-control" placeholder="Enter User ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number:</label>
+                        <input type="text" id="phone-number" name="phone-number" class="form-control" placeholder="Enter Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="resident">Resident:</label>
+                        <input type="text" id="resident" name="resident" class="form-control" placeholder="Enter Resident">
+                    </div>
+                    <div class="form-group">
+                        <label for="national-id">National ID:</label>
+                        <input type="text" id="national-id" name="national-id" class="form-control" placeholder="Enter National ID">
+                    </div>
+                    <button type="button" class="btn btn-primary mt-2 w-25" onclick="updateUser()">Update</button>
+                </form>
+                <div id="loading">
+                    <div class="spinner-border" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        async function updateUser() {
+            const userId = document.getElementById('user-id').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phoneNumber = document.getElementById('phone-number').value;
+            const resident = document.getElementById('resident').value;
+            const nationalId = document.getElementById('national-id').value;
+
+            if (userId && name && email && phoneNumber && resident && nationalId) {
+                // Show loading spinner
+                $('#loading').show();
+
+                try {
+                    const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name,
+                            email,
+                            phone_number: phoneNumber,
+                            resident,
+                            national_id: nationalId
+                        })
+                    });
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated!',
+                            text: 'User updated successfully.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Error updating user.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Network error or server issue.',
+                        confirmButtonText: 'OK'
+                    });
+                } finally {
+                    // Hide loading spinner
+                    $('#loading').hide();
+                }
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning!',
+                    text: 'Please fill out all fields.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+
+        // Toggle dark mode
+        $('#theme-switcher').click(function() {
+            $('body').toggleClass('dark-mode');
+            const isDarkMode = $('body').hasClass('dark-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            const icon = isDarkMode ? 'light_mode' : 'dark_mode';
+            $('#theme-switcher i').text(icon);
+        });
+
+        // Check for saved theme preference in localStorage
+        if (localStorage.getItem('theme') === 'dark') {
+            $('body').addClass('dark-mode');
+            $('#theme-switcher i').text('light_mode');
+        }
+    </script>
+</body>
+</html>
